@@ -49,13 +49,6 @@ const os_1 = __nccwpck_require__(2037);
 const path = __importStar(__nccwpck_require__(1017));
 const CACHE_PATH = [path.join((0, os_1.homedir)(), ".rustup", "toolchains")];
 const INSTALL_ARGS = ["--default-toolchain", "none", "-y"];
-function splitArg(arg) {
-    return arg
-        .split(",")
-        .map(e => e.split(" "))
-        .flat()
-        .filter(e => e.length > 0);
-}
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
@@ -94,13 +87,13 @@ function run() {
                 "--allow-downgrade",
             ];
             if (components) {
-                splitArg(components).forEach(val => {
+                components.split(" ").forEach(val => {
                     args.push("--component");
                     args.push(val);
                 });
             }
             if (targets) {
-                splitArg(targets).forEach(val => {
+                targets.split(" ").forEach(val => {
                     args.push("--target");
                     args.push(val);
                 });

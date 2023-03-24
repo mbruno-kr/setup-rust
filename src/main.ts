@@ -10,14 +10,6 @@ import * as path from "path";
 const CACHE_PATH = [path.join(homedir(), ".rustup", "toolchains")];
 const INSTALL_ARGS = ["--default-toolchain", "none", "-y"];
 
-function splitArg(arg: string): string[] {
-  return arg
-    .split(",")
-    .map(e => e.split(" "))
-    .flat()
-    .filter(e => e.length > 0);
-}
-
 async function run(): Promise<void> {
   try {
     try {
@@ -62,13 +54,13 @@ async function run(): Promise<void> {
       "--allow-downgrade",
     ];
     if (components) {
-      splitArg(components).forEach(val => {
+      components.split(" ").forEach(val => {
         args.push("--component");
         args.push(val);
       });
     }
     if (targets) {
-      splitArg(targets).forEach(val => {
+      targets.split(" ").forEach(val => {
         args.push("--target");
         args.push(val);
       });
