@@ -10,6 +10,14 @@ import * as path from "path";
 const CACHE_PATH = [path.join(homedir(), ".rustup", "toolchains")];
 const INSTALL_ARGS = ["--default-toolchain", "none", "-y"];
 
+function splitArg(arg: string): string[] {
+  return arg
+    .split(",")
+    .map(e => e.split(" "))
+    .flat()
+    .filter(e => e.length > 0);
+}
+
 async function run(): Promise<void> {
   try {
     try {
@@ -54,13 +62,13 @@ async function run(): Promise<void> {
       "--allow-downgrade",
     ];
     if (components) {
-      components.split(" ").forEach(val => {
+      splitArg(components).forEach(val => {
         args.push("--component");
         args.push(val);
       });
     }
     if (targets) {
-      targets.split(" ").forEach(val => {
+      splitArg(targets).forEach(val => {
         args.push("--target");
         args.push(val);
       });
@@ -89,7 +97,7 @@ async function run(): Promise<void> {
     } catch (error) {
       core.info(`Cache hit occurred on key ${cacheKey}, not saving cache.`);
     }
-  } catch (error) {
+  } catch (error: any) {
     core.setFailed(error.message);
   }
 }
